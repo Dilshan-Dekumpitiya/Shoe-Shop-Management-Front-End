@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +7,8 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-
-
-    <section id="signInSection">
-        <body class="cover-background" style="background-image: url('assets/img/christian-wiediger-I8-T4lMCA6k-unsplash.jpg'); background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; backdrop-filter: blur(1px);"/>
+<section id="signInSection" style="display: block;">
+    <div class="cover-background" style="background-image: url('assets/img/christian-wiediger-I8-T4lMCA6k-unsplash.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; backdrop-filter: blur(1px);">
         <div class="container">
             <div class="row justify-content-center align-items-center min-vh-100">
                 <div class="col-lg-4 col-md-8 col-8 col-sm-8 col-lg-4">
@@ -34,7 +31,7 @@
                                     <button type="submit" class="btn btn-primary w-100">Sign in</button>
                                 </div>
                                 <p class="mt-4 mb-0 text-center">
-                                    Don't have an account? <a href="sign-up.html" class="text-primary">Sign up</a>
+                                    Don't have an account? <a href="#" class="text-primary" id="signUpbtn">Sign up</a>
                                 </p>
                             </form>
                         </div>
@@ -42,13 +39,11 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id=signUpSection" class="main-content  mt-0">
-        <body class="cover-background" style="background-image: url('assets/img/christian-wiediger-I8-T4lMCA6k-unsplash.jpg'); background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; backdrop-filter: blur(1px);"/>
-
+<section id="signUpSection" style="display: none;" class="main-content mt-0">
+    <div class="cover-background" style="background-image: url('assets/img/christian-wiediger-I8-T4lMCA6k-unsplash.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; backdrop-filter: blur(1px);">
         <div class="page-header min-vh-100">
             <div class="container">
                 <div class="row">
@@ -83,14 +78,14 @@
                                         </label>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                                        <button type="submit" class="btn btn-primary w-100">Sign up</button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <p class="mb-2 text-sm mx-auto">
                                     Already have an account?
-                                    <a href="index.html" class="text-primary text-gradient font-weight-bold">Sign in</a>
+                                    <a href="#" class="text-primary text-gradient font-weight-bold" id="signInbtn">Sign in</a>
                                 </p>
                             </div>
                         </div>
@@ -98,12 +93,11 @@
                 </div>
             </div>
         </div>
-
-    </section>
-
-
-
+    </div>
+</section>
 
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/bootstrap/js/jquery-3.6.1.min.js"></script>
+<script src="script/script.js"></script>
 </body>
 </html>
