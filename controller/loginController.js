@@ -1,5 +1,5 @@
 import { SignInModel } from "../model/signInModel.js";
-import { AuthApi } from "../api/loginApi";
+import { LoginApi } from "../api/loginApi.js";
 import { SignUpModel } from "../model/signUpModel.js";
 
 const email = $('#signIn-email');
@@ -10,7 +10,7 @@ const signUpEmail = $('#signUp-email');
 const signUpPassword = $('#signUp-password');
 const signUpRole = $('#signUp-role');
 
-const authApi = new AuthApi();
+const authApi = new LoginApi();
 let globalToken = null;
 
 signInBtn.on('click', (event) => {

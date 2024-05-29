@@ -1,4 +1,4 @@
-export class loginApi {
+export class LoginApi {
     async handleHttpRequest(url, method, data = null) {
         try {
             const response = await fetch(url, {
