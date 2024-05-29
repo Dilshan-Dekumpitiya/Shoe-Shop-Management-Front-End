@@ -1,5 +1,5 @@
 import { SignInModel } from "../model/signInModel.js";
-import { AuthApi } from "../api/authApi.js";
+import { AuthApi } from "../api/loginApi";
 import { SignUpModel } from "../model/signUpModel.js";
 
 const email = $('#signIn-email');
