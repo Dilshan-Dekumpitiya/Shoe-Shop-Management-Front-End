@@ -24,7 +24,7 @@ saveBranch.on('click', (event) => {
                 icon: 'success',
                 title: 'Branch Add Successful!',
                 text: 'Welcome back to HelloShoeShop!',
-                footer: '<a href="">Proceed to SignUp</a>',
+                footer: '<a href="../index.html">Proceed to SignIN</a>',
                 showConfirmButton: false,
                 timer: 3000,
             });

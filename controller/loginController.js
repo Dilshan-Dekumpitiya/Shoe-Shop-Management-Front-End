@@ -25,7 +25,7 @@ signInBtn.on('click', (event) => {
                 icon: 'success',
                 title: 'Signed In Successfully!',
                 text: 'Welcome back to HelloShoeShop!',
-                footer: '<a href="">Proceed to Dashboard</a>',
+                footer: '<a href="../dashboard.html">Proceed to Dashboard</a>',
                 showConfirmButton: false,
                 timer: 3000,
             });
@@ -47,7 +47,7 @@ signUpForm.on('submit', (event) => {
                 icon: 'success',
                 title: 'Signed Up Successfully!',
                 text: 'Welcome to HelloShoeShop!',
-                footer: '<a href="">Proceed to Dashboard</a>',
+                footer: '<a href="../dashboard.html">Proceed to Dashboard</a>',
                 showConfirmButton: false,
                 timer: 3000,
             });
