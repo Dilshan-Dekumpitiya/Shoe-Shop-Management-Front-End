@@ -1,111 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Hello Shoe Management System</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css">
-    <meta name="viewport"
-          content="height=device-height,width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css">
-    <!-- Boxicons CDN Link -->
-    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    <meta name="viewport"
-          content="height=device-height,width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="assets/css/loginStyle.css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Shoes Management System</title>
+    <link rel="stylesheet" href="assets/css/bootstrap-5.3.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/mediaQuarys.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
 </head>
+<body >
 
-<body>
+    <script>
 
-<section id="process" class="login-process">
-    <div class="container" id="container">
-        <div class="form-container sign-up-form">
-            <form id="signUpForm">
-                <h1 class="heading">Create Account</h1>
-                <input id="signUp-email" type="email" placeholder="Email" required>
-                <input id="signUp-password" type="password" placeholder="Password" required>
-                <select id="signUp-role" required>
-                    <option value="" disabled selected>Select Role</option>
-                    <option value="USER">User</option>
-                    <option value="ADMIN">Manager</option>
-                </select>
-                <div class="btn-panel">
-                    <button id="signUpBtn" type="submit">Sign Up</button>
-                    <button id="branchSetUpBtn" type="button">Branch Set Up</button>
-                </div>
-            </form>
-        </div>
-        <div class="form-container sign-in-form">
-            <form id="signInForm">
-                <h1 class="heading">Sign In</h1>
-                <input id="signIn-email" type="email" placeholder="Email" required>
-                <input id="signIn-password" type="password" placeholder="Password" required>
-                <button id="signInBtn" type="submit">Sign In</button>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left-panel">
-                    <h1>Welcome Back!</h1>
-                    <p>Register now with Hello Shoes Management System!</p>
-                    <button class="hidden" id="signInToggle">Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right-panel">
-                    <h1>Hi, User!</h1>
-                    <p>Register now with Hello Shoes Management System!</p>
-                    <button class="hidden" id="signUpToggle">Sign Up</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="branch-setUp" class="login-process">
-    <div class="branch-setUp container">
-        <div class="form-container sign-in-form">
-            <form>
-                <h1 class="heading">Create Branch</h1>
-                <input id="branch-name" type="text" placeholder="Branch Name">
-                <input id="product-code" type="text" placeholder="Product Activation Code">
-                <div class="btn-panel">
-                    <button id="save-branch">Save Branch</button>
-                    <button id="backBtn">Back</button>
-                </div>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-right-panel">
-                    <h1>Branch setup</h1>
-                    <p>Cultivating growth and connectivity from our roots!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="assets/script/loginScript.js"></script>
-
-<!-- alert CDNs -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-<script type="module" src="controller/branchController.js"></script>
-<script type="module" src="controller/loginController.js"></script>
-
-<!-- Bootstrap JS and Popper.js (required for Bootstrap JavaScript components) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
-
+        window.onload = function() {
+            window.location.href = "view/login.html";
+        }
+    </script>
 </body>
-
 </html>

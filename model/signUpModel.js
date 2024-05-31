@@ -1,7 +1,8 @@
-export class SignUpModel{
-    constructor(email,password,role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
+export class SignUpModel {
+    constructor(signUpEmail, singUpPassword, name, signUpRole) {
+        this.email = signUpEmail;
+        this.password = singUpPassword;
+        this.name = name;
+        this.role = signUpRole;
     }
 }

@@ -1,226 +1,288 @@
-
-import { SupplierApi } from "../api/supplierApi.js";
-import { SupplierModel } from "../model/supplierModel.js";
-
-$(document).ready(function () {
-    let supAddBtn = $('#supAddBtn');
-    let heading = $('#supplierFormHeading');
-    let supplierForm = $('#supplierForm');
-    let supClear = $('#supClear');
-
-    let id = $('#sup-id');
-    let name = $('#sup-name');
-    let category = $('#sup-category');
-    let address1 = $('#sup-address1');
-    let address2 = $('#sup-address2');
-    let address3 = $('#sup-address3');
-    let address4 = $('#sup-address4');
-    let postalCode = $('#sup-postalCode');
-    let countryCBox = $('#sup-country');
-    let contact1 = $('#sup-contact-1');
-    let contact2 = $('#sup-contact-2');
-    let email = $('#sup-email');
-
-    let supSaveUpdateBtn = $('#sup-save-update-btn');
-    let tableBody = $('#sup-table-body');
-    let search = $('#searchInput');
+import {SupplierModel} from "../model/SupplierModel.js";
 
 
-    let supplierApi = new SupplierApi();
+// Save Suppliers
+$('#supplierSaveBtn').on('click', ()=>{
 
-    populateSupplierTable();
+    var supplierCode = $('#supplierCodeTxt').val();
+    var supplierName = $('#supplierNameTxt').val();
+    var category = $('#supCategoryOption').val();
+    var address1 = $('#address1Txt').val();
+    var address2 = $('#address2Txt').val();
+    var address3 = $('#address3Txt').val();
+    var contact1 = $('#contact1Txt').val();
+    var contact2 = $('#contact2Txt').val();
+    var mail = $('#mailTxt').val();
 
-    populateCountriesCBox();
 
-    function populateCountriesCBox(){
-        countries.forEach(function(country) {
-            let option = $('<option></option>').attr('value', country).text(country);
-            countryCBox.append(option);
-        });
-    }
-    function generateSupplierId() {
-        supplierApi.generateSupplierId()
-            .then(supId => {
-                id.val(supId);
-            })
-            .catch(error => {
-                showError('Fetching Error', 'Error generating supplier ID');
-            });
-    }
+    if (validate(supplierCode,"Supplier Code") && validate(supplierName,"Supplier Name") && validate(category,"Category") && validate(address1,"Address 1") && validate(address2,"Address 2") && validate(address3,"Address 3") && validate(contact1,"Contact 1") && validate(contact2,"Contact 2") && validate(mail,"Mail")){
 
-    supAddBtn.on('click', function () {
-        openSupplierModal('Add New Supplier', 'Save', 'btn-success');
-        supplierForm[0].reset();
-        generateSupplierId();
-    });
 
-    supClear.on('click', function () {
-        supplierForm[0].reset();
-    });
+        var  supplierDetails = new SupplierModel(supplierCode,supplierName,category,address1,address2,address3,contact1,contact2,mail);
+        var supplierDetailsJson = JSON.stringify(supplierDetails);
 
-    supSaveUpdateBtn.on('click', function (event) {
-        event.preventDefault();
-
-        let supplierId = id.val();
-        let supplierName = name.val();
-        let supplierCategory = category.val();
-        let supplierAddress1 = address1.val();
-        let supplierAddress2 = address2.val();
-        let supplierAddress3 = address3.val();
-        let supplierAddress4 = address4.val();
-        let supplierPostalCode = postalCode.val();
-        let supplierCountry = countryCBox.val();
-        let supplierContact1 = contact1.val();
-        let supplierContact2 = contact2.val();
-        let supplierEmail = email.val();
-
-        let supplierModel = new SupplierModel(
-            null,
-            supplierName,
-            supplierCategory,
-            supplierAddress1,
-            supplierAddress2,
-            supplierAddress3,
-            supplierAddress4,
-            supplierPostalCode,
-            supplierCountry,
-            supplierContact1,
-            supplierContact2,
-            supplierEmail
-        );
-
-        if (supSaveUpdateBtn.text() === 'Save') {
-            supplierApi.saveSupplier(supplierModel)
-                .then((responseText) => {
-                    Swal.fire(responseText, 'Successful', 'success');
-                    supClear.click();
-                    populateSupplierTable();
-                })
-                .catch((error) => {
-                    showError('Save Unsuccessful', error);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/shoes/supplier/save",
+            contentType: "application/json",
+            data: supplierDetailsJson,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+            },
+            success: function(data) {
+                $('#supplier_Table').empty();
+                getAllSupplier();
+                Swal.fire({
+                    title: "Supplier Save Success",
+                    icon: "success"
                 });
-        } else {
-            supplierApi.updateSupplier(supplierModel, supplierId)
-                .then((responseText) => {
-                    Swal.fire(responseText, 'Successful', 'success');
-                    supClear.click();
-                    populateSupplierTable();
-                })
-                .catch((error) => {
-                    showError('Update Unsuccessful', error);
-                });
-        }
-    });
-
-    function showError(title, text) {
-        Swal.fire({
-            icon: 'error',
-            title: title,
-            text: text,
-            footer: '<a href="">Why do I have this issue?</a>'
-        });
-    }
-
-    function populateSupplierTable() {
-        supplierApi.getAllSuppliers()
-            .then((suppliers) => {
-                tableBody.empty();
-                suppliers.forEach((supplier) => {
-                    tableBody.append(
-                        `<tr>
-                            <th scope="row">${supplier.supplierCode}</th>
-                            <td>${supplier.supplierName}</td>
-                            <td>${supplier.category}</td>
-                            <td>${supplier.address1}, ${supplier.address2}, ${supplier.address3}, ${supplier.address4}</td>
-                            <td>${supplier.postalCode}</td>
-                            <td>${supplier.country}</td>
-                            <td>${supplier.contactNo1}</td>
-                            <td>${supplier.contactNo2}</td>
-                            <td>${supplier.email}</td>
-                            <td>
-                                <button class="updateBtn btn btn-warning btn-sm" data-toggle="modal" data-target="#supplierModal"
-                                    data-supplier-id="${supplier.supplierCode}">
-                                    Edit
-                                </button>
-                            </td>
-                            <td>
-                                <button class="deleteBtn btn btn-danger btn-sm" data-supplier-id="${supplier.supplierCode}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>`
-                    );
-                });
-            })
-            .catch((error) => {
-                showError('Fetch Unsuccessful', error);
-            });
-    }
-
-    tableBody.on('click', '.updateBtn', function () {
-        const supplierId = $(this).data('supplier-id');
-        openSupplierModal('Update Supplier', 'Update', 'btn-warning', supplierId);
-    });
-
-    tableBody.on('click', '.deleteBtn', function () {
-        const supplierId = $(this).data('supplier-id');
-        deleteSupplier(supplierId);
-    });
-
-    function deleteSupplier(supplierId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Delete'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                supplierApi.deleteSupplier(supplierId)
-                    .then((responseText) => {
-                        Swal.fire(responseText, 'Successful', 'success');
-                        populateSupplierTable();
-                    })
-                    .catch((error) => {
-                        showError('Delete Unsuccessful', error);
-                    });
+            },
+            error: function(xhr, status, error) {
+                alert("Failed");
             }
         });
+
+
+
     }
 
-    function openSupplierModal(headingText, buttonText, buttonClass, supplierId) {
-        if (supplierId) {
-            supplierApi.getSupplier(supplierId)
-                .then((supplier) => {
-                    id.val(supplier.supplierCode);
-                    name.val(supplier.supplierName);
-                    category.val(supplier.category);
-                    address1.val(supplier.address1);
-                    address2.val(supplier.address2);
-                    address3.val(supplier.address3);
-                    address4.val(supplier.address4);
-                    postalCode.val(supplier.postalCode);
-                    countryCBox.val(supplier.country);
-                    contact1.val(supplier.contactNo1);
-                    contact2.val(supplier.contactNo2);
-                    email.val(supplier.email);
-                })
-                .catch((error) => {
-                    showError('Fetch Unsuccessful', error);
+})
+
+
+// Search Supplier
+$('#supplierSearchBtn').on('click', ()=>{
+
+    var searchSupId = $('#supplierSearchTxt').val();
+
+
+    if (validate(searchSupId,"Search Supplier Code")){
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/shoes/supplier/search/"+searchSupId,
+            contentType: "application/json",
+            data: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+            },
+            success: function(data) {
+
+                if (!data){
+                    Swal.fire({
+                        title: "Sorry This Id Have No Supplier !",
+                        icon: "info"
+                    });
+                }else {
+                    $('#supplierCodeTxt').val(data.supplierCode);
+                    $('#supplierNameTxt').val(data.supplierName);
+                    $('#supCategoryOption').val(data.category);
+                    $('#address1Txt').val(data.addressLine1);
+                    $('#address2Txt').val(data.addressLine2);
+                    $('#address3Txt').val(data.addressLine3);
+                    $('#contact1Txt').val(data.contact1);
+                    $('#contact2Txt').val(data.contact2);
+                    $('#mailTxt').val(data.email);
+                }
+
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    title: "Sorry Sir !!",
+                    text:  " Your account does not have permission to delete the Suppler details!",
+                    icon: "error"
                 });
-        }
+            }
+        });
 
-        heading.text(headingText);
-        supSaveUpdateBtn.text(buttonText);
-        supSaveUpdateBtn.removeClass().addClass(`btn ${buttonClass}`);
     }
 
-    search.on("input", function () {
-        let value = $(this).val().toLowerCase();
-        $("#sup-table-body tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+})
+
+
+
+
+// update Employee
+$('#supplierUpdateBtn').on('click', ()=>{
+
+    var updateSupplierCode = $('#supplierCodeTxt').val();
+
+    var supplierName = $('#supplierNameTxt').val();
+    var category = $('#supCategoryOption').val();
+    var address1 = $('#address1Txt').val();
+    var address2 = $('#address2Txt').val();
+    var address3 = $('#address3Txt').val();
+    var contact1 = $('#contact1Txt').val();
+    var contact2 = $('#contact2Txt').val();
+    var mail = $('#mailTxt').val();
+
+
+    if (validate(updateSupplierCode,"Update Supplier Code") && validate(supplierName,"Supplier Name") && validate(category,"Category") && validate(address1,"Address 1") && validate(address2,"Address 2") && validate(address3,"Address 3") && validate(contact1,"Contact 1") && validate(contact2,"Contact 2") && validate(mail,"Mail")){
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success m-1",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
         });
+        swalWithBootstrapButtons.fire({
+            title: "Do you want to Update this Suppler ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Update it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                var  supplierDetails = new SupplierModel(supplierName,category,address1,address2,address3,contact1,contact2,mail);
+                var supplierDetailsJson = JSON.stringify(supplierDetails);
+
+                $.ajax({
+                    type: "PUT",
+                    url: "http://localhost:8080/shoes/supplier/update/"+updateSupplierCode,
+                    contentType: "application/json",
+                    data: supplierDetailsJson,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+                    },
+                    success: function(data) {
+                        $('#supplier_Table').empty();
+                        getAllSupplier();
+
+                        swalWithBootstrapButtons.fire({
+                            title: "Supplier Update Success !",
+                            icon: "success"
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Sorry Sir !!",
+                            text:  " Your account does not have permission to delete the Suppler details!",
+                            icon: "error"
+                        });
+                    }
+                });
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                    title: "Suppler Update Cancelled !",
+                    icon: "error"
+                });
+            }
+        });
+
+
+
+    }
+
+})
+
+// Delete Employee
+$('#supplierDeleteBtn').on('click', ()=>{
+
+    var deleteSupplierCode = $('#supplierCodeTxt').val();
+
+
+    if (validate(deleteSupplierCode,"Delete Supplier Code")){
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success m-1",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: "Do you want to Delete this Suppler?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "http://localhost:8080/shoes/supplier/delete/"+deleteSupplierCode,
+                    contentType: "application/json",
+                    data: false,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+                    },
+                    success: function(data) {
+                        $('#supplier_Table').empty();
+                        getAllSupplier();
+                        swalWithBootstrapButtons.fire({
+                            title: "Suppler Delete Success !",
+                            icon: "success"
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: "Sorry Sir !!",
+                            text:  " Your account does not have permission to delete the Suppliers details!",
+                            icon: "error"
+                        });
+                    }
+                });
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                    title: "Item Delete Cancelled !",
+                    icon: "error"
+                });
+            }
+        });
+
+    }
+
+})
+
+
+// get All Suppliers and supplier table set data
+const getAllSupplier = () => {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/shoes/supplier/getAllSuppliers",
+        contentType: "application/json",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+        },
+        success: function(data) {
+            data.forEach(suppliers => {
+                var newRow = "<tr><th scope='row'>" + suppliers.supplierCode + "</th><td>" + suppliers.supplierName + "</td><td>" + suppliers.category + "</td><td>" + suppliers.addressLine1 + "</td><td>" + suppliers.addressLine2   + "</td><td>" + suppliers.addressLine3 + "</td><td>" + suppliers.contact1  +  "</td><td>" + suppliers.contact2 +  "</td><td>" + suppliers.email +  "</td></tr>";
+                $("#supplier_Table").append(newRow);
+            });
+
+        },
+        error: function(xhr, status, error) {
+            alert("Failed");
+        }
     });
+}
+
+
+// Validation Function
+function validate(value, field_name){
+    if (!value){
+        Swal.fire({
+            icon: 'warning',
+            title: `Please enter the ${field_name}!`
+        });
+        return false;
+    }
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    getAllSupplier();
 });
